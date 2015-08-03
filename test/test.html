@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<script src="../src/jquery-2.1.4.min.js"></script>
+		<script src="../src/jquery.autocomplete.js"></script>
+		<style>
+			html,body {
+				height: 100%;
+				width: 100%;
+				padding: 0px;
+				margin: 0 0 0 0;
+			}
+			.mcenter{
+				position: absolute;
+				width: 700px;
+				height: 45px;
+				top:0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				margin: auto;
+			}
+			.mcenter input{
+				width: 700px;
+				height: 45px;
+				padding: 5px;
+			}
+		</style>
+		<script>
+			$(document).on('ready',function(){
+				$('#target').autocomplete({
+					onKeyup: function(e){
+						alert("PRUEBA FUNCIONAL");
+					},
+					dataAction: function(e,response){
+						response();
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="mcenter">
+			<input type="text" id="target" />
+		</div>
+	</body>
+</html>
