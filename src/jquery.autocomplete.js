@@ -7,7 +7,7 @@
             onKeyup: function(e){},
             onFocus: function(e){},
             onBlur: function(e){},
-            dataAction: function(e,handler){},
+            dataAction: function(e,request,handler){},
             handler: function(data){},
             maxVisible: 10,
             content: null,
@@ -103,7 +103,9 @@
                         _SETTINGS.index = -1;
                         _SETTINGS.suggestArray = [];
                         _SETTINGS.content = $(_SELF).val();
-                        SYNC_STRUCT._DO(_SETTINGS.dataAction,e,PRIV._HANDLER,SYNC_STRUCT);
+                        if(_SETTINGS.content.length >= _SETTINGS.minLength){
+                            SYNC_STRUCT._DO(_SETTINGS.dataAction,e,_SETTINGS.content,PRIV._HANDLER,SYNC_STRUCT);
+                        }
                     }
                 });
                 $(_SELF).on('focus',function(e,free){
@@ -213,7 +215,7 @@
                 _FOCUS: function(e,SYNC_STRUCT){
                     _SETTINGS.index = -1;
                     _SETTINGS.suggestArray = [];
-                    SYNC_STRUCT._DO(_SETTINGS.dataAction,e,PRIV._HANDLER,SYNC_STRUCT);
+                    SYNC_STRUCT._DO(_SETTINGS.dataAction,e,_SETTINGS.content,PRIV._HANDLER,SYNC_STRUCT);
                 }
             }
             //DEFINIMOS METODOS PUBLICOS
