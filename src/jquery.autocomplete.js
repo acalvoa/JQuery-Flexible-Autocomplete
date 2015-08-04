@@ -15,7 +15,8 @@
             suggestHeight: 30,
             suggestArray: [],
             index:0,
-            selected: null
+            selected: null,
+            KEYPRESS: false
         };
         return this.each(function() {
             //ESTRTCTURA DE SINCRONIZACION
@@ -92,6 +93,7 @@
                 });
                 $(_SELF).on('keyup',function(e){
                     if(e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 13){
+                        _SETTINGS.KEYPRESS = true;
                         e.preventDefault();
                         PRIV._ANALIZE_MOV(e.keyCode);
                     }
@@ -150,10 +152,17 @@
                                     $(_SELF).val(data[i].data);
                                     container.remove();
                                 }).on('mouseenter',function(){
-                                    _SETTINGS.index = -1;
-                                    PRIV._RESET_SELECTED(sug);
+                                    if(!_SETTINGS.KEYPRESS){
+                                        _SETTINGS.index = i;
+                                        PRIV._RESET_SELECTED(sug);
+                                    }
                                 }).on('mouseleave',function(){
-                                    PRIV._RESET_SELECTED(null);
+                                    if(!_SETTINGS.KEYPRESS){
+                                        PRIV._RESET_SELECTED(null);
+                                    }
+                                }).on('mousemove',function(e){
+                                    _SETTINGS.KEYPRESS = false;
+                                    e.stopPropagation();
                                 }).appendTo(container);
                                 _SETTINGS.suggestArray.push(sug);
                             }
@@ -179,14 +188,17 @@
                     }
                     else if(code == 38){
                         //UP BOTTON
-                        if(_SETTINGS.index <= -1) return;
+                        if(_SETTINGS.index <= 0) return;
                         PRIV._RESET_SELECTED(_SETTINGS.suggestArray[--_SETTINGS.index]);
+                        if(_SETTINGS.index < 10) $(".autocomplete-handler").scrollTop(0);
+                        if(_SETTINGS.index >= 10) $(".autocomplete-handler").scrollTop((_SETTINGS.index-(_SETTINGS.maxVisible-1))*_SETTINGS.suggestHeight);
                     }
                     else if(code == 40)
                     {
                         //DOWN BOTTON
                         if(_SETTINGS.index >= _SETTINGS.suggestArray.length) return;
                         PRIV._RESET_SELECTED(_SETTINGS.suggestArray[++_SETTINGS.index]);
+                        if(_SETTINGS.index >= 10) $(".autocomplete-handler").scrollTop((_SETTINGS.index-(_SETTINGS.maxVisible-1))*_SETTINGS.suggestHeight);
                     }
                 },
                 _RESET_SELECTED: function(SELECTED){
@@ -195,7 +207,7 @@
                     _SETTINGS.selected.css('background',"#EEE");
                 },
                 _NOT_FOCUS: function(e,SYNC_STRUCT){
-                    $(".autocomplete-handler")  .remove();
+                    $(".autocomplete-handler").remove();
                     SYNC_STRUCT._FREEALL();
                 },
                 _FOCUS: function(e,SYNC_STRUCT){
