@@ -1,0 +1,20 @@
+/*CSS STYLESHEET JQUERY FLEXIBLE AUTOCOMPLETE */
+.autocomplete-handler {
+	position: absolute;
+    background: #FFF;
+    border: 1px solid #CCC;
+    height: auto;
+    z-index:9999;
+}
+.autocomplete-handler .autocomplete-suggest{
+	height: 20px;
+    padding: 5px 15px;
+    white-space: nowrap;
+    color:#666;
+}
+.autocomplete-handler .autocomplete-suggest:hover{
+	background: #EEE;
+}
+.autocomplete-handler .autocomplete-suggest strong{
+	color: #588BD9;
+}
